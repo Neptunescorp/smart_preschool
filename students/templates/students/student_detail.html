@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>{{ object.first_name }} {{ object.last_name }}</h2>
+
+{% if object.photo %}
+<img src="{{ object.photo.url }}" width="200" class="mb-3 rounded">
+{% endif %}
+
+<ul class="list-group">
+
+<li class="list-group-item">
+<strong>Gender:</strong> {{ object.gender }}
+</li>
+
+<li class="list-group-item">
+<strong>Date of Birth:</strong> {{ object.date_of_birth }}
+</li>
+
+<li class="list-group-item">
+<strong>Parent:</strong> {{ object.parent_name }}
+</li>
+
+<li class="list-group-item">
+<strong>Phone:</strong> {{ object.parent_phone }}
+</li>
+
+<li class="list-group-item">
+<strong>Address:</strong> {{ object.address }}
+</li>
+
+</ul>
+
+<a href="{% url 'student_list' %}" class="btn btn-primary mt-3">
+Back
+</a>
+
+{% endblock %}

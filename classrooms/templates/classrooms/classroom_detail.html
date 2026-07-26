@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>{{ object.name }}</h2>
+
+<div class="card">
+
+    <div class="card-body">
+
+        <p><strong>Age Group:</strong> {{ object.age_group }}</p>
+
+        <p><strong>Teacher:</strong> {{ object.teacher }}</p>
+
+        <p><strong>Capacity:</strong> {{ object.capacity }}</p>
+
+        <p><strong>Description:</strong></p>
+
+        <p>{{ object.description }}</p>
+
+    </div>
+
+</div>
+
+<a href="{% url 'classroom_edit' object.pk %}"
+   class="btn btn-warning mt-3">
+    Edit
+</a>
+
+<a href="{% url 'classroom_list' %}"
+   class="btn btn-secondary mt-3">
+    Back
+</a>
+
+{% endblock %}

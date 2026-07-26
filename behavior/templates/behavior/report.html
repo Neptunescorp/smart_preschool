@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+        <h2>🤖 AI Progress Report</h2>
+    </div>
+
+    <div class="card-body">
+
+        <h4>Student</h4>
+        <p>{{ behavior.student }}</p>
+
+        <h4>Teacher</h4>
+        <p>{{ behavior.teacher }}</p>
+
+        <h4>Date</h4>
+        <p>{{ behavior.date }}</p>
+
+        <hr>
+
+        <h4>Generated Report</h4>
+
+        <pre style="white-space: pre-wrap; font-family: inherit;">
+{{ behavior.ai_report }}
+        </pre>
+
+        <a href="{% url 'behavior_list' %}" class="btn btn-secondary">
+            Back
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

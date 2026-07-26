@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between mb-4">
+
+    <h2>Behavior Evaluations</h2>
+
+    <a href="{% url 'behavior_add' %}" class="btn btn-success">
+        ➕ New Evaluation
+    </a>
+
+</div>
+
+<table class="table table-striped">
+
+    <thead>
+
+        <tr>
+
+            <th>Student</th>
+            <th>Teacher</th>
+            <th>Date</th>
+            <th>Communication</th>
+            <th>Confidence</th>
+            <th>Creativity</th>
+            <th>Actions</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for behavior in behaviors %}
+
+        <tr>
+
+            <td>{{ behavior.student }}</td>
+            <td>{{ behavior.teacher }}</td>
+            <td>{{ behavior.date }}</td>
+
+            <td>{{ behavior.communication }}/5</td>
+            <td>{{ behavior.confidence }}/5</td>
+            <td>{{ behavior.creativity }}/5</td>
+
+            <td>
+
+                <a href="{% url 'behavior_edit' behavior.pk %}"
+                   class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+            
+                <a href="{% url 'behavior_analysis' behavior.student.id %}"
+                   class="btn btn-primary btn-sm">
+                    🤖 AI Analysis
+                </a>
+            
+                <a href="{% url 'behavior_delete' behavior.pk %}"
+                   class="btn btn-danger btn-sm">
+                    Delete
+                </a>
+            
+            </td>
+        </tr>
+
+    {% empty %}
+
+        <tr>
+
+            <td colspan="7">
+                No evaluations found.
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

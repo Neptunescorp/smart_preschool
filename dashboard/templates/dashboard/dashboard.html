@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="mb-4">🏫 Smart Preschool Dashboard</h1>
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+        <div class="card text-bg-primary shadow">
+            <div class="card-body text-center">
+                <h5>👦 Students</h5>
+                <h1>{{ students }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-bg-success shadow">
+            <div class="card-body text-center">
+                <h5>👩 Teachers</h5>
+                <h1>{{ teachers }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-bg-warning shadow">
+            <div class="card-body text-center">
+                <h5>🏫 Classrooms</h5>
+                <h1>{{ classrooms }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-bg-info shadow">
+            <div class="card-body text-center">
+                <h5>📅 Present Today</h5>
+                <h1>{{ present_today }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-bg-danger shadow">
+            <div class="card-body text-center">
+                <h5>❌ Absent Today</h5>
+                <h1>{{ absent_today }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card text-bg-secondary shadow">
+            <div class="card-body text-center">
+                <h5>⭐ Behavior Reports</h5>
+                <h1>{{ behaviors }}</h1>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<div class="row">
+
+    <div class="col-lg-6">
+
+        <div class="card shadow">
+
+            <div class="card-header">
+                <h4>👶 Recently Added Students</h4>
+            </div>
+
+            <div class="card-body">
+
+                <table class="table">
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Parent</th>
+                    </tr>
+
+                    {% for student in recent_students %}
+
+                    <tr>
+                        <td>
+                            {{ student.first_name }}
+                            {{ student.last_name }}
+                        </td>
+
+                        <td>
+                            {{ student.parent_name }}
+                        </td>
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="2">
+                            No students yet.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <div class="card shadow">
+
+            <div class="card-header">
+                <h4>🤖 Latest AI Reports</h4>
+            </div>
+
+            <div class="card-body">
+
+                <table class="table">
+
+                    <tr>
+
+                        <th>Student</th>
+                        <th>Date</th>
+                        <th></th>
+
+                    </tr>
+
+                    {% for behavior in recent_behaviors %}
+
+                    <tr>
+
+                        <td>{{ behavior.student }}</td>
+
+                        <td>{{ behavior.date }}</td>
+
+                        <td>
+
+                            <a
+                                href="{% url 'behavior_report' behavior.pk %}"
+                                class="btn btn-primary btn-sm">
+
+                                View
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="3">
+                            No reports.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<h3>⚡ Quick Actions</h3>
+
+<div class="d-flex flex-wrap gap-2">
+
+    <a href="/students/" class="btn btn-primary">
+        ➕ Students
+    </a>
+
+    <a href="/teachers/" class="btn btn-success">
+        👩 Teachers
+    </a>
+
+    <a href="/classrooms/" class="btn btn-warning">
+        🏫 Classrooms
+    </a>
+
+    <a href="/attendance/take/" class="btn btn-danger">
+        📅 Take Attendance
+    </a>
+
+    <a href="/behavior/add/" class="btn btn-info">
+        ⭐ New Behavior
+    </a>
+
+</div>
+<hr class="my-5">
+
+<div class="row">
+
+    <div class="col-lg-6">
+
+        <div class="card shadow">
+
+            <div class="card-header">
+                <h4>📅 Today's Attendance</h4>
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="attendanceChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <div class="card shadow">
+
+            <div class="card-header">
+                <h4>⭐ Average Behavior Scores</h4>
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="behaviorChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+new Chart(
+    document.getElementById("attendanceChart"),
+    {
+        type: "pie",
+        data: {
+            labels: ["Present","Absent","Late"],
+            datasets: [{
+                data: {{ attendance_chart|safe }},
+            }]
+        }
+    }
+);
+
+new Chart(
+    document.getElementById("behaviorChart"),
+    {
+        type: "bar",
+        data: {
+            labels: [
+                "Communication",
+                "Confidence",
+                "Creativity",
+                "Teamwork"
+            ],
+            datasets: [{
+                label: "Average Score",
+                data: {{ behavior_chart|safe }},
+            }]
+        },
+        options:{
+            scales:{
+                y:{
+                    beginAtZero:true,
+                    max:5
+                }
+            }
+        }
+    }
+);
+
+</script>
+
+{% endblock %}

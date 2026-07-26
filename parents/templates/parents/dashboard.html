@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">👨‍👩‍👧 Parent Portal</h2>
+
+<div class="alert alert-primary">
+    Welcome <strong>{{ request.user.first_name|default:request.user.username }}</strong>
+</div>
+
+<div class="row">
+
+    <!-- Children -->
+    <div class="col-lg-6">
+
+        <div class="card shadow mb-4">
+
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">👶 My Children</h5>
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-hover">
+
+                    <tr>
+                        <th>Photo</th>
+                        <th>Name</th>
+                        <th>Class</th>
+                    </tr>
+
+                    {% for child in children %}
+
+                    <tr>
+
+                        <td>
+
+                            {% if child.photo %}
+                                <img src="{{ child.photo.url }}"
+                                     width="60"
+                                     class="rounded-circle">
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {{ child.first_name }}
+                            {{ child.last_name }}
+
+                        </td>
+
+                        <td>
+
+                            {{ child.classroom }}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="3">
+                            No children assigned.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Attendance -->
+    <div class="col-lg-6">
+
+        <div class="card shadow mb-4">
+
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">📅 Recent Attendance</h5>
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-striped">
+
+                    <tr>
+                        <th>Date</th>
+                        <th>Student</th>
+                        <th>Status</th>
+                    </tr>
+
+                    {% for item in attendance|slice:":10" %}
+
+                    <tr>
+
+                        <td>{{ item.date }}</td>
+
+                        <td>{{ item.student }}</td>
+
+                        <td>{{ item.status }}</td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="3">
+                            No attendance records.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr class="my-4">
+
+<div class="card shadow mb-4">
+
+    <div class="card-header bg-warning">
+
+        <h5 class="mb-0">
+            📢 School Announcements
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        {% for announcement in announcements %}
+
+        <div class="border-bottom mb-3 pb-3">
+
+            <h5>
+
+                {{ announcement.title }}
+
+            </h5>
+
+            <small class="text-muted">
+
+                {{ announcement.created_at|date:"d M Y H:i" }}
+
+            </small>
+
+            <p class="mt-2">
+
+                {{ announcement.message }}
+
+            </p>
+
+        </div>
+
+        {% empty %}
+
+        <p>
+
+            No announcements available.
+
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+<div class="card shadow">
+
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0">🤖 AI Progress Reports</h5>
+    </div>
+
+    <div class="card-body">
+
+        {% for report in behaviors %}
+
+        <div class="card mb-3">
+
+            <div class="card-body">
+
+                <h5>{{ report.student }}</h5>
+
+                <small class="text-muted">
+
+                    {{ report.date }}
+
+                </small>
+
+                <hr>
+
+                <p>
+
+                    {{ report.ai_report }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <p>No AI reports available.</p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

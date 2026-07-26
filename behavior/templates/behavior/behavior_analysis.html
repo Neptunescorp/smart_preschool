@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>🤖 AI Child Analysis</h2>
+
+<hr>
+
+<h3>
+
+{{ student.first_name }}
+{{ student.last_name }}
+
+</h3>
+
+<p>
+
+Classroom:
+<strong>{{ student.classroom }}</strong>
+
+</p>
+
+<hr>
+
+<h4>Behavior History</h4>
+
+<table class="table table-striped">
+
+<tr>
+
+<th>Date</th>
+<th>Communication</th>
+<th>Confidence</th>
+<th>Creativity</th>
+<th>Teamwork</th>
+
+</tr>
+
+{% for b in behaviors %}
+
+<tr>
+
+<td>{{ b.date }}</td>
+
+<td>{{ b.communication }}</td>
+
+<td>{{ b.confidence }}</td>
+
+<td>{{ b.creativity }}</td>
+
+<td>{{ b.teamwork }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<hr>
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h4>
+
+🤖 Gemini AI Analysis
+
+</h4>
+
+</div>
+
+<div class="card-body">
+
+<pre style="white-space:pre-wrap;font-family:inherit;">
+
+{{ report }}
+
+</pre>
+
+</div>
+
+</div>
+
+{% endblock %}
